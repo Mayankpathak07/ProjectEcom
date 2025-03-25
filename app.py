@@ -4,6 +4,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dotenv import load_dotenv
 load_dotenv(".env.local")
+import logging
+
+logging.basicConfig(filename="app.log", format="%(asctime)s %(levelname)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
+                    level = logging.INFO)
+
+logging.info("Application Started")
 
 st.sidebar.title(":red[E - Commerce Analytics]")
 
@@ -13,7 +19,10 @@ if option == "Sales Analytics":
     st.title(":blue[Sales Performance Overview]")
     type = st.selectbox("Analysis Type ?", ("Please Select", "Data mart", "Aggregation tables", "KPI"))
 
+    
+
     if type == "Data mart":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT DATE(order_purchase_timestamp) AS Order_Date, 
                SUM(total_price) AS Total_Revenue, 
@@ -65,6 +74,8 @@ if option == "Sales Analytics":
         st.plotly_chart(fig)
 
     elif type == "Aggregation tables":
+        
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT DATE(order_purchase_timestamp) AS Order_Date, 
                COUNT(DISTINCT(order_id)) AS Total_Orders, 
@@ -77,6 +88,7 @@ if option == "Sales Analytics":
         st.table(sales_table)
 
     elif type == "KPI":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT ROUND(SUM(total_price), 2) AS actual_price 
         FROM my_database.olist_orders_cleaned_dataset;
@@ -97,6 +109,7 @@ elif option == "Customer Insights":
     type = st.selectbox("Analysis Type ?", ("Please Select", "Data mart", "Aggregation tables", "KPI"))
 
     if type == "Data mart":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT customer_id, 
                COUNT(order_id) AS total_orders, 
@@ -127,6 +140,7 @@ elif option == "Customer Insights":
         st.plotly_chart(fig)
 
     elif type == "Aggregation tables":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT c.customer_id AS Customer_ID, 
                COUNT(DISTINCT(o.order_id)) AS Total_Orders, 
@@ -142,6 +156,7 @@ elif option == "Customer Insights":
         st.table(customer_behaviour)
 
     elif type == "KPI":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT ROUND(SUM(total_price) / COUNT(DISTINCT(order_id)), 2) AS avg_order_value 
         FROM my_database.olist_orders_cleaned_dataset;
@@ -158,10 +173,12 @@ elif option == "Customer Insights":
         st.plotly_chart(fig)
 
 elif option == "Seller Performance":
+    
     st.title(":orange[Seller Performance Overview]")
     type = st.selectbox("Analysis Type ?", ("Please Select", "Data mart", "Aggregation tables", "KPI"))
 
     if type == "Data mart":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT s.seller_state AS Seller_State, 
                COUNT(*) AS Count 
@@ -184,6 +201,7 @@ elif option == "Seller Performance":
         st.plotly_chart(fig)
 
     elif type == "Aggregation tables":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT s.seller_id AS Seller_ID, 
                COUNT(DISTINCT(o.order_id)) AS Total_Orders, 
@@ -200,6 +218,7 @@ elif option == "Seller Performance":
         st.table(seller_perf)
 
     elif type == "KPI":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT s.seller_id AS Seller_ID, 
                ROUND(AVG(DATEDIFF(o.order_estimated_delivery_date, o.order_approved_at))) AS Average_Delivery_Time 
@@ -215,10 +234,12 @@ elif option == "Seller Performance":
         st.table(Delivery_eff)
 
 elif option == "Product Analytics":
+    
     st.title(":violet[Product Performance Dashboard]")
     type = st.selectbox("Analysis Type ?", ("Please Select", "Data mart", "Aggregation tables", "KPI"))
 
     if type == "Data mart":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT p.product_id AS Product_ID, 
                p.product_category AS Product_Category, 
@@ -250,6 +271,7 @@ elif option == "Product Analytics":
         st.plotly_chart(fig)
 
     elif type == "Aggregation tables":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT p.product_id AS Product_ID, 
                p.product_category AS Product_Category, 
@@ -265,6 +287,7 @@ elif option == "Product Analytics":
         st.table(top_prod)
 
     elif type == "KPI":
+        logging.info(f"Selected {type} in {option}")
         query = '''
         SELECT p.product_id AS Product_ID, 
                p.product_category AS Product_Category, 
