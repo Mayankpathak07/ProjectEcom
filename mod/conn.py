@@ -1,7 +1,8 @@
-import pymysql, pandas as pd, streamlit as st
+import pymysql, pandas as pd, streamlit as st,os
+
 
 def get_conn():
-    return pymysql.connect(host = "localhost", user = "root", password = "Mayank3@", database = "my_database", cursorclass = pymysql.cursors.DictCursor)
+    return pymysql.connect(host = os.getenv("DB_HOST"), user = os.getenv("DB_USER"), password = os.getenv("DB_PASSWORD"), database = os.getenv("DB_NAME"), cursorclass = pymysql.cursors.DictCursor)
 
 
 def run_query(query):

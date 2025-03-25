@@ -1,4 +1,6 @@
 import os, pandas as pd
+from dotenv import load_dotenv
+load_dotenv(".env.local")
 
 cleaned_files = os.listdir(r"C:\Users\Mayank Pathak\Downloads\E - commerce pipeline cleaned data")
 
@@ -40,10 +42,10 @@ from mysql.connector import Error
 # MySQL connection setup
 try:
     connection = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='Mayank3@',
-        database='my_database'
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password= os.getenv("DB_PASSWORD"),
+        database= os.getenv("DB_NAME")
     )
     if connection.is_connected():
         cursor = connection.cursor()

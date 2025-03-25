@@ -2,6 +2,8 @@ from mod.conn import get_conn, run_query
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+from dotenv import load_dotenv
+load_dotenv(".env.local")
 
 st.sidebar.title(":red[E - Commerce Analytics]")
 
